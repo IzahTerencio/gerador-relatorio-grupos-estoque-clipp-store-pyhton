@@ -6,6 +6,7 @@
 
 
 import fdb
+from datetime import datetime
 
 
 '''Função responsável por realizar a conexão com o banco de dados do sistema'''
@@ -30,13 +31,13 @@ def generate_report(start, end):
              "tb_est_identificador AS ESTOQUE_ID, tb_nfvenda AS VENDA "
              "WHERE GRUPO.id_grupo IS NOT NULL AND GRUPO.id_grupo = ESTOQUE.id_grupo AND ESTOQUE.id_estoque = "
              "ESTOQUE_ID.id_estoque AND ESTOQUE_ID.id_identificador = ITEM.id_identificador AND ITEM.id_nfvenda = "
-             "VENDA.id_nfvenda AND VENDA.dt_emissao BETWEEN " + start + " AND " + end + " GROUP BY GRUPO.descricao")
+             "VENDA.id_nfvenda AND VENDA.dt_emissao BETWEEN ? AND ? GROUP BY GRUPO.descricao")
 
     srv_file = open('host_connection_data.txt', 'r')
 
     # Tratamento dos parâmetros de conexão do servidor
     for f in srv_file:
-        f = f[3:len(f)]
+        f = f[3:len(f)-1]
         file_buff.append(f)
 
     srv_file.close()
@@ -45,6 +46,11 @@ def generate_report(start, end):
                                   file_buff[1],
                                   file_buff[2],
                                   file_buff[3])
+
+    cursor = connection.cursor()
+    cursor.execute(query, (start, end))
+
+    print(cursor.fetchall())
 
 
 
@@ -58,6 +64,7 @@ def format_string_date(day):
         else:
             aux += '-'
 
+    aux = datetime.strptime(aux, '%d-%m-%Y').date()
     return(aux)
 
 
