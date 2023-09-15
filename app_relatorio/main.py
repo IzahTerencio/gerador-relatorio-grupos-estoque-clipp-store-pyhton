@@ -5,8 +5,23 @@
 '''
 
 
+import fdb
+
+
 '''Função responsável por realizar a conexão com o banco de dados do sistema'''
-def connect_database(name, usr, passwd):
+def connect_database(srvr, pth_db, usr, passwd):
+    connection = fdb.connect(
+        host=srvr,
+        database=pth_db,
+        user=usr,
+        password=passwd)
+        # host='SOFT-INTEGRADOS'
+        # database='C:\Program Files (x86)\CompuFour\Clipp\Base\CLIPP.FDB'
+        # user='sysdba'
+        # password='masterkey'
+
+    return(connection)
+
 
 
 def generate_report(start, end):
