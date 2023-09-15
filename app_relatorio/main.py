@@ -50,7 +50,16 @@ def generate_report(start, end):
     cursor = connection.cursor()
     cursor.execute(query, (start, end))
 
-    print(cursor.fetchall())
+    #print(cursor.fetchall())
+    result_query = cursor.fetchall()
+
+    group, value = '', 0
+    for t in result_query:
+        group, value = t
+
+        if (len(group) < 25):
+            tam = 25 - len(group)
+            print(f"{group}{tam * ' '}R${value}")
 
 
 
