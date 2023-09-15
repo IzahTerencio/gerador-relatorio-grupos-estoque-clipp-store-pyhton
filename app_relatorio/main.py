@@ -10,21 +10,20 @@ import fdb
 
 '''Função responsável por realizar a conexão com o banco de dados do sistema'''
 def connect_database(srvr, pth_db, usr, passwd):
-    connection = fdb.connect(
+    con = fdb.connect(
         host=srvr,
         database=pth_db,
         user=usr,
         password=passwd)
-        # host='SOFT-INTEGRADOS'
-        # database='C:\Program Files (x86)\CompuFour\Clipp\Base\CLIPP.FDB'
-        # user='sysdba'
-        # password='masterkey'
 
-    return(connection)
+    return(con)
 
 
 
+'''Função responsável por gerar o relatório solicitado pelo usuário'''
 def generate_report(start, end):
+    file_buff = []
+
     query = ("SELECT GRUPO.descricao AS GRUPO, "
              "SUM((ITEM.vlr_total + ITEM.vlr_despesa - ITEM.vlr_desc)) AS VAL_VENDIDO "
              "FROM tb_est_grupo AS GRUPO, tb_estoque AS ESTOQUE, tb_nfv_item AS ITEM, "
@@ -33,9 +32,20 @@ def generate_report(start, end):
              "ESTOQUE_ID.id_estoque AND ESTOQUE_ID.id_identificador = ITEM.id_identificador AND ITEM.id_nfvenda = "
              "VENDA.id_nfvenda AND VENDA.dt_emissao BETWEEN " + start + " AND " + end + " GROUP BY GRUPO.descricao")
 
-# realiza a query
-# acessa o banco de dados
-# exibe o resultado ao usuário
+    srv_file = open('host_connection_data.txt', 'r')
+
+    # Tratamento dos parâmetros de conexão do servidor
+    for f in srv_file:
+        f = f[3:len(f)]
+        file_buff.append(f)
+
+    srv_file.close()
+
+    connection = connect_database(file_buff[0],
+                                  file_buff[1],
+                                  file_buff[2],
+                                  file_buff[3])
+
 
 
 '''Recebe entrada do usuário e padroniza a mesma'''

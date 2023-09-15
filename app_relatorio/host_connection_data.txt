@@ -1,0 +1,4 @@
+sv=SOFT-INTEGRADOS
+pt=C:\Program Files (x86)\CompuFour\Clipp\Base\CLIPP.FDB
+us=sysdba
+pw=masterkey
