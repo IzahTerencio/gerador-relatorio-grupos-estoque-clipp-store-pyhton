@@ -42,6 +42,8 @@ def generate_report(start, end):
 
     srv_file.close()
 
+# Para fins de teste, esta funcionalidade de conexão será omitida por enquanto.
+'''
     connection = connect_database(file_buff[0],
                                   file_buff[1],
                                   file_buff[2],
@@ -60,6 +62,7 @@ def generate_report(start, end):
         if (len(group) < 25):
             tam = 25 - len(group)
             print(f"{group}{tam * ' '}R${value}")
+'''
 
 
 
@@ -79,6 +82,9 @@ def format_string_date(day):
 
 '''Interface de interação com o usuário'''
 def start():
+    print(PySide6.__version__)
+    print(PySide6.QtCore.__version__)
+
     print('Bem-vindo!\n' +
           'Informe o período de abrangência do relatório')
 
@@ -89,11 +95,3 @@ def start():
     last_day = format_string_date(last_day)
 
     generate_report(first_day, last_day)
-
-
-    # chama função gerar relatório passando a data
-
-
-# Call the user interactive  function
-if __name__ == '__main__':
-    start()
